@@ -3,6 +3,7 @@ const cors = require('cors')
 
 const app = express()
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(cors())
 
@@ -65,6 +66,17 @@ app.post('/api/notes', (request, response) => {
 
   notes = notes.concat(note)
   response.json(note)
+})
+
+app.put('/api/notes/:id', (req, res) => {
+  const body = req.body
+  const newNote = {
+    content: body.content,
+    important: body.important,
+    id: body.id,
+  }
+  notes = notes.map(note => note.id === newNote.id ? newNote : note)
+  res.json(newNote)
 })
 
 app.delete('/api/notes/:id', (request, response) => {
