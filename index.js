@@ -84,9 +84,14 @@ app.put('/api/notes/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
+app.delete('/api/notes/:id', (req, res, next) => {
   notes = notes.filter(note => note.id !== id)
+  Note
+    .findByIdAndDelete(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(err => next(err))
 
   response.status(204).end()
 })
